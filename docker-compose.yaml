@@ -32,3 +32,29 @@ services:
     environment:
       - VITE_API_URL=/api
     restart: unless-stopped
+
+  jenkins:
+    build:
+      context: ./jenkins
+      dockerfile: Dockerfile
+    image: demo-jenkins:latest
+    container_name: demo-jenkins
+    ports:
+      - "9090:8080"   # Jenkins UI
+      - "50000:50000" # JNLP agent port
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+    restart: unless-stopped
+    networks:
+      - default
+
+volumes:
+  jenkins_home:
+
+networks:
+  default:
+    name: demo-network
+    driver: bridge
