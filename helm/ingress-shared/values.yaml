@@ -1,0 +1,47 @@
+# Default values for ingress-shared chart
+# This chart manages the shared ALB Ingress routing traffic to frontend and backend
+#
+# IMPORTANT: Service names below must match the service names created by
+# backend and frontend charts. When using ArgoCD, you may need to override
+# these values or ensure release names are consistent.
+
+namespace: demo
+
+# Ingress configuration
+ingress:
+  enabled: true
+  className: alb
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: instance
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+    alb.ingress.kubernetes.io/healthcheck-path: /api/health
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: "30"
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "5"
+    alb.ingress.kubernetes.io/healthy-threshold-count: "2"
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: "2"
+
+# Service references
+# Override these with the actual service names from backend/frontend charts
+# Default format: {release-name}-{chart-name}-service
+# Example: if release is "demo", service name is "demo-frontend-service"
+frontendService:
+  name: demo-frontend-service
+  port: 80
+
+backendService:
+  name: demo-backend-service
+  port: 80
+
+# Ingress rules configuration
+rules:
+  # Frontend rule: Root path
+  frontend:
+    path: /
+    pathType: Prefix
+  # Backend rule: API path
+  backend:
+    path: /api
+    pathType: Prefix

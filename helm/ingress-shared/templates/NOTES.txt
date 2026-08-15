@@ -1,0 +1,18 @@
+{{/*
+NOTES.txt for ingress-shared chart
+*/}}
+Thank you for installing {{ .Chart.Name }}.
+
+Your release is named {{ .Release.Name }} and is running in namespace {{ .Release.Namespace }}.
+
+This chart deploys an AWS ALB Ingress that routes:
+  - /           -> {{ .Values.frontendService.name }}
+  - /api/*      -> {{ .Values.backendService.name }}
+
+To get the ALB address:
+
+  $ kubectl get ingress -n {{ .Release.Namespace }} {{ include "ingress-shared.fullname" . }}
+
+To describe the ingress:
+
+  $ kubectl describe ingress -n {{ .Release.Namespace }} {{ include "ingress-shared.fullname" . }}

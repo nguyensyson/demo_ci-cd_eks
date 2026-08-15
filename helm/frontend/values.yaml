@@ -1,0 +1,64 @@
+# Default values for frontend chart
+# This chart deploys the demo-frontend application to Kubernetes
+
+namespace: demo
+
+replicaCount: 2
+
+image:
+  # Replace <ECR_REPO_URL> with the actual ECR repository URL from Terraform output
+  # Example: <ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/demo-frontend
+  repository: <ECR_REPO_URL>/demo-frontend
+  tag: "latest"
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+  name: http
+
+# Environment variables (can be empty if none required)
+env: []
+
+# Resources configuration
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi
+
+# Readiness probe configuration
+readinessProbe:
+  path: /
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  successThreshold: 1
+
+# Liveness probe configuration
+livenessProbe:
+  path: /
+  initialDelaySeconds: 10
+  periodSeconds: 15
+  failureThreshold: 3
+
+# Horizontal Pod Autoscaler
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+
+# Pod labels
+podLabels: {}
+
+# Service labels
+serviceLabels: {}
+
+# Deployment annotations
+deploymentAnnotations: {}
+
+# Service annotations
+serviceAnnotations: {}

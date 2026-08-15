@@ -1,0 +1,22 @@
+{{/*
+NOTES.txt for frontend chart
+*/}}
+Thank you for installing {{ .Chart.Name }}.
+
+Your release is named {{ .Release.Name }} and is running in namespace {{ .Release.Namespace }}.
+
+To learn more about the release, try:
+
+  $ helm status {{ .Release.Name }} -n {{ .Release.Namespace }}
+  $ helm get all {{ .Release.Name }} -n {{ .Release.Namespace }}
+
+To check the application status:
+
+  $ kubectl get pods -n {{ .Release.Namespace }} -l app.kubernetes.io/name=frontend
+
+To view the application logs:
+
+  $ kubectl logs -n {{ .Release.Namespace }} -l app.kubernetes.io/name=frontend
+
+Frontend service endpoint (ClusterIP):
+  $ kubectl get svc -n {{ .Release.Namespace }} {{ include "frontend.name" . }}-service

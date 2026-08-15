@@ -1,0 +1,16 @@
+apiVersion: v2
+name: backend
+description: A Helm chart for demo-backend application
+type: application
+version: 1.0.0
+appVersion: "latest"
+
+keywords:
+  - demo
+  - backend
+  - api
+
+maintainers:
+  - name: DevOps Team
+
+dependencies: []

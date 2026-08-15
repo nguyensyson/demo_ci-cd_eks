@@ -1,0 +1,16 @@
+apiVersion: v2
+name: frontend
+description: A Helm chart for demo-frontend application
+type: application
+version: 1.0.0
+appVersion: "latest"
+
+keywords:
+  - demo
+  - frontend
+  - web
+
+maintainers:
+  - name: DevOps Team
+
+dependencies: []
