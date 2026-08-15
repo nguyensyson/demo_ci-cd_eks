@@ -70,14 +70,19 @@ open http://localhost:3000
 │   ├── nginx.conf        # Nginx configuration
 │   ├── Dockerfile        # Multi-stage Docker build
 │   └── .dockerignore
-├── k8s/                  # Kubernetes manifests
-│   ├── namespace.yaml
-│   ├── backend-deployment.yaml
-│   ├── backend-service.yaml
-│   ├── frontend-deployment.yaml
-│   ├── frontend-service.yaml
-│   ├── ingress.yaml
-│   └── hpa.yaml          # Optional HPA
+├── helm/                 # Helm charts
+│   ├── backend/           # Backend Helm chart
+│   ├── frontend/          # Frontend Helm chart
+│   └── ingress-shared/    # Shared ingress chart
+├── terraform/            # Terraform IaC (VPC, EKS, ECR)
+│   └── environments/dev/  # Dev environment
+├── argocd/                # ArgoCD configuration
+│   ├── 00-namespace.yaml
+│   ├── 01-install-argocd.yaml
+│   ├── application-backend.yaml
+│   ├── application-frontend.yaml
+│   └── README.md
+├── jenkins/              # Jenkins container config
 ├── docker-compose.yaml
 ├── DEPLOY.md             # EKS deployment guide
 └── README.md

@@ -1,0 +1,24 @@
+# ArgoCD Installation Manifest
+#
+# NOTE: This manifest references the official ArgoCD upstream manifest.
+# For production, consider pinning to a specific version:
+#   https://github.com/argoproj/argo-cd/releases/tag/vX.Y.Z
+#
+# Apply command:
+#   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+#
+# For HA setup (production):
+#   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/ha/install.yaml
+
+---
+# Namespace is defined in 00-namespace.yaml
+# This file documents how to install ArgoCD core components
+
+# Quick install command (run this instead of applying a local manifest):
+# kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+# For ClusterRoleBinding to allow ArgoCD manage all namespaces (optional for demo):
+# kubectl create clusterrolebinding argocd-manager \
+#   --clusterrole=cluster-admin \
+#   --serviceaccount=argocd:argocd-application-controller \
+#   -n argocd

@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: demo-backend
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: demo-backend
+    app.kubernetes.io/part-of: demo-app
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    # TODO: Replace <GIT_REPO_URL> with your Git repository URL
+    # Example: https://github.com/your-org/demo-ci-cd-eks
+    repoURL: <GIT_REPO_URL>
+    targetRevision: main
+    path: helm/backend
+
+    helm:
+      # Values overrides for backend - adjust as needed
+      parameters:
+        - name: image.repository
+          value: <AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/demo-backend
+        - name: image.tag
+          value: latest
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: demo
+
+  syncPolicy:
+    # NOTE: Automated sync is convenient for demo purposes.
+    # For production, consider manual sync or protected branches with approval workflows.
+    automated:
+      prune: true      # Automatically delete resources removed from git
+      selfHeal: true   # Automatically sync to match git state
+
+    syncOptions:
+      - CreateNamespace=true
+
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
