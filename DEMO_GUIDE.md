@@ -15,7 +15,7 @@ Hướng dẫn chi tiết từng bước để setup và chạy demo CI/CD pipel
 5. [Bước 3: ArgoCD - GitOps Controller](#bước-3-argocd---gitops-controller)
 6. [Bước 4: Cấu hình GitHub Webhook](#bước-4-cấu-hình-github-webhook)
 7. [Bước 5: Chạy Demo Pipeline](#bước-5-chạy-demo-pipeline)
-8. [Xác minh & Troubleshooting](#xác-minh--troubleshooting)
+8. [Xác minh &amp; Troubleshooting](#xác-minh--troubleshooting)
 9. [Dọn dẹp](#dọn-dẹp)
 
 ---
@@ -124,6 +124,7 @@ terraform init
 ```
 
 Output mong đợi:
+
 ```
 Initializing the backend...
 Initializing provider plugins...
@@ -138,6 +139,7 @@ terraform plan -out=tfplan
 ```
 
 Resources sẽ được tạo:
+
 - VPC với 2 private + 2 public subnets
 - EKS cluster (1.30)
 - ECR repositories (demo-backend, demo-frontend)
@@ -262,10 +264,12 @@ docker compose exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
 4. Configure:
 
 **General Tab:**
+
 - ☑️ GitHub project
 - Project URL: `https://github.com/<your-org>/<your-repo>/`
 
 **Pipeline Tab:**
+
 - Definition: **Pipeline script from SCM**
 - SCM: **Git**
 - Repository URL: `https://github.com/<your-org>/<your-repo>.git`
@@ -394,6 +398,7 @@ http://localhost:9090/generic-webhook-trigger/invoke
 ### 5.1 Trigger Pipeline
 
 **Option A: Push code lên GitHub**
+
 ```bash
 # Make a change to any file
 git add .
@@ -402,6 +407,7 @@ git push origin main
 ```
 
 **Option B: Trigger manually trong Jenkins**
+
 1. Open Jenkins: http://localhost:9090
 2. Click vào `demo-ci-cd-pipeline`
 3. Click **Build Now**
@@ -476,6 +482,7 @@ docker compose ps
 ### Common Issues
 
 **Issue: ArgoCD "ComparisonFailed"**
+
 ```bash
 # Xem chi tiết
 argocd app diff demo-backend
@@ -485,6 +492,7 @@ argocd app sync demo-backend --force
 ```
 
 **Issue: ImagePullBackOff**
+
 ```bash
 # Kiểm tra ECR login
 aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin <account>.dkr.ecr.ap-southeast-1.amazonaws.com
@@ -494,6 +502,7 @@ aws ecr describe-images --repository-name demo-backend --region ap-southeast-1
 ```
 
 **Issue: Jenkins can't connect to GitHub**
+
 ```bash
 # Kiểm tra credentials
 curl -I https://github.com
@@ -608,12 +617,12 @@ docker compose logs -f
 
 ### URLs
 
-| Service | URL | Default Credentials |
-|---------|-----|---------------------|
-| Jenkins | http://localhost:9090 | admin / `<initial-password>` |
-| ArgoCD | https://localhost:8080 | admin / `<argocd-password>` |
-| Backend API | http://localhost:8080/api/health | - |
-| Frontend | http://localhost:3000 | - |
+| Service     | URL                              | Default Credentials           |
+| ----------- | -------------------------------- | ----------------------------- |
+| Jenkins     | http://localhost:9090            | admin /`<initial-password>` |
+| ArgoCD      | https://localhost:8080           | admin /`<argocd-password>`  |
+| Backend API | http://localhost:8080/api/health | -                             |
+| Frontend    | http://localhost:3000            | -                             |
 
 ---
 
@@ -622,21 +631,22 @@ docker compose logs -f
 Sau khi demo hoạt động, có thể mở rộng:
 
 1. **Production-grade setup**:
+
    - ArgoCD SSO với OAuth2 (GitHub, Okta)
    - TLS với cert-manager
    - Multi-environment (staging, production)
-
 2. **CI/CD improvements**:
+
    - ArgoCD Image Updater cho auto-sync image tags
    - Jenkins Blue Ocean cho visual pipeline
    - Slack/Teams notifications
-
 3. **Security**:
+
    - RBAC policies
    - Network policies
    - Secret management (AWS Secrets Manager, HashiCorp Vault)
-
 4. **Monitoring**:
+
    - Prometheus + Grafana
    - AWS CloudWatch Container Insights
    - ArgoCD Notifications

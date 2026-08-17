@@ -62,8 +62,6 @@ resource "aws_eks_access_entry" "terraform_user" {
   cluster_name  = module.eks.cluster_name
   principal_arn = data.aws_caller_identity.current.arn
 
-  kubernetes_groups = ["system:masters"]
-
   depends_on = [module.eks]
 }
 
@@ -108,8 +106,8 @@ resource "aws_iam_policy" "jenkins_ecr_policy" {
           "ecr:CompleteLayerUpload"
         ]
         Resource = [
-          module.ecr.repository_urls["backend"],
-          module.ecr.repository_urls["frontend"]
+          module.ecr.repository_arns["backend"],
+          module.ecr.repository_arns["frontend"]
         ]
       }
     ]

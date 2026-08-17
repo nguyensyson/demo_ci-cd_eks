@@ -31,5 +31,5 @@ variable "availability_zones" {
 variable "cluster_version" {
   description = "Kubernetes version cho EKS"
   type        = string
-  default     = "1.30"
+  default     = "1.31"
 }

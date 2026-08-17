@@ -21,7 +21,7 @@ output "cluster_oidc_issuer_url" {
 
 output "oidc_provider_arn" {
   description = "ARN của IAM OIDC Provider"
-  value       = aws_iam_openid_connect_provider.eks_oidc.arn
+  value       = data.aws_iam_openid_connect_provider.existing.arn
 }
 
 output "cluster_security_group_id" {

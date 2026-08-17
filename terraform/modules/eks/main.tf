@@ -53,7 +53,13 @@ module "eks" {
 }
 
 # IAM OIDC Provider cho IRSA (Kubernetes Service Account -> AWS IAM)
+# Kiểm tra xem OIDC provider đã tồn tại chưa
+data "aws_iam_openid_connect_provider" "existing" {
+  url = module.eks.cluster_oidc_issuer_url
+}
+
 resource "aws_iam_openid_connect_provider" "eks_oidc" {
+  count = 0  # Không tạo mới - chỉ dùng data source ở trên
   client_id_list  = ["sts.amazonaws.com"]
   thumbprint_list = []
   url             = module.eks.cluster_oidc_issuer_url
