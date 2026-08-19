@@ -53,14 +53,18 @@ module "eks" {
 }
 
 # IAM OIDC Provider cho IRSA (Kubernetes Service Account -> AWS IAM)
-# Kiểm tra xem OIDC provider đã tồn tại chưa
-data "aws_iam_openid_connect_provider" "existing" {
+# Lấy thumbprint từ OIDC issuer URL
+data "tls_certificate" "eks" {
   url = module.eks.cluster_oidc_issuer_url
 }
 
 resource "aws_iam_openid_connect_provider" "eks_oidc" {
-  count = 0  # Không tạo mới - chỉ dùng data source ở trên
+  count = 1
   client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = []
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
   url             = module.eks.cluster_oidc_issuer_url
 }
+
+# Để import existing OIDC provider, chạy:
+# terraform import module.eks.aws_iam_openid_connect_provider.eks_oidc <ARN>
+# ARN có dạng: arn:aws:iam::123456789012:oidc-provider/oidc.eks.ap-southeast-1.amazonaws.com/id/D69D492646CCE0397906354A4451BA9F
